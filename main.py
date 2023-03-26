@@ -135,7 +135,7 @@ class MyApp(QtWidgets.QWidget):
     
     @QtCore.Slot()
     def addItem(self):
-        row = self.table.rowCount()-3
+        row = self.table.rowCount()-2
         self.table.insertRow(row)
         comboBox = QtWidgets.QComboBox()
         comboBox.addItems(self.db.dishesNames)
@@ -167,11 +167,7 @@ class MyApp(QtWidgets.QWidget):
         row = self.table.rowCount()
         self.table.insertRow(row)
         res = QtWidgets.QLabel("Итог: ", objectName="resultText")
-        self.table.setCellWidget(row, 0, res)        
-        row = self.table.rowCount()
-        self.table.insertRow(row)
-        res = QtWidgets.QLabel("Итог (на 100гр.): ", objectName="resultText")
-        self.table.setCellWidget(row, 0, res)      
+        self.table.setCellWidget(row, 0, res)
     
     @QtCore.Slot()
     def changeSelectedData(self, *args):
@@ -208,26 +204,23 @@ class MyApp(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def updateResults(self):
-        print('update')
-        resultsRow = self.table.rowCount() - 2
-        resultsRow100 = self.table.rowCount() - 1
+        resultsRow = self.table.rowCount() - 1
 
         for column in range(1, self.table.columnCount()-1):
             columnSum = self.getSumOfColum(column)
             if column == 2: self.eatedValue.setText(f"{columnSum:.0f} ккал") 
             self.table.setItem(resultsRow, column, QtWidgets.QTableWidgetItem(f"{columnSum:.2f}"))
-            self.table.setItem(resultsRow100, column, QtWidgets.QTableWidgetItem(f"{columnSum / self.table.rowCount() - 3:.2f}"))
         
         self.neededValue.setText(f"{int(self.normalValue.text()[:-5]) - int(self.eatedValue.text()[:-5])} ккал")
 
     def getSumOfColum(self, columIndex) -> int:
         columnSum = 0
         try:
-            for row in range(self.table.rowCount() - 3):
+            for row in range(self.table.rowCount() - 2):
                 item = self.table.item(row, columIndex)
                 columnSum += float(item.text())
         except AttributeError:
-            for row in range(self.table.rowCount() - 3):
+            for row in range(self.table.rowCount() - 2):
                 item = self.table.cellWidget(row, columIndex)
                 columnSum += float(item.text())
         return columnSum
