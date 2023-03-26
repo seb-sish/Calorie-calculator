@@ -1,0 +1,44 @@
+QLabel#boldedOrangeText {
+    color: #fd7d36;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+QLabel#boldedBlackText {
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#resultText {
+    font-weight: bold;
+    text-align: left;
+    padding: 5px;
+}
+
+#addBtn {
+    font-weight: bold;
+    background-color: #fd7d36;
+    color: #fff;
+}
+
+QRadioButton#menGender {
+    padding: 5px;
+    color: #000;
+    border: 2px solid #fd7d36;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+QRadioButton#womenGender {
+    padding: 5px;
+    color: #000;
+    border: 2px solid #fd7d36;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+QRadioButton:checked {
+    color: #fff;
+    background-color: #fd7d36;
+}
