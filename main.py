@@ -7,6 +7,12 @@ import pandas as pd
 import sys, os
 
 basedir = os.path.dirname(__file__)
+try:
+    from ctypes import windll
+    myappid = 'school.calories.calculator.1.0'
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except ImportError:
+    pass
 
 class MyApp(QtWidgets.QWidget):
     def __init__(self):
@@ -23,7 +29,6 @@ class MyApp(QtWidgets.QWidget):
         self.womenGender = QtWidgets.QRadioButton("Женский", objectName="womenGender", minimumWidth=128)
         self.womenGender.toggled.connect(self.updateNormalAndNeededCalories)
 
-        self.globalValidator = QRegularExpressionValidator(QtCore.QRegularExpression("[0-9]{6}"))
         validator = QRegularExpressionValidator(QtCore.QRegularExpression("[0-9]{3}"))
 
         self.ageLabel = QtWidgets.QLabel("Ваш возраст: ")
@@ -70,12 +75,9 @@ class MyApp(QtWidgets.QWidget):
         self.loadCss()
         self.addAppendBtn()
         self.addResults()
-        self.addItem()
-        self.addItem()
-        self.addItem()
 
     def loadCss(self):
-        with open("style.css", "r") as f:
+        with open(os.path.join(basedir, "style.css"), "r") as f:
             _style = f.read()
             self.setStyleSheet(_style)
 
@@ -144,8 +146,9 @@ class MyApp(QtWidgets.QWidget):
 
         dataRow = self.db.dishes[self.db.dishesNames[0]]
         weight = QtWidgets.QLineEdit(str(dataRow[0]), alignment=Qt.AlignCenter)
-        weight.setValidator(self.globalValidator)
-        weight.editingFinished.connect(self.updateResults)
+        validator = QRegularExpressionValidator(QtCore.QRegularExpression("[0-9.]{10}"))
+        weight.setValidator(validator)
+        weight.textEdited.connect(self.updateResults)
         self.table.setCellWidget(row, 1, weight)
 
         for column in range(2, self.table.columnCount() - 1):
@@ -218,11 +221,11 @@ class MyApp(QtWidgets.QWidget):
         try:
             for row in range(self.table.rowCount() - 2):
                 item = self.table.item(row, columIndex)
-                columnSum += float(item.text())
+                columnSum += float(item.text() if item.text() != '' else 0)
         except AttributeError:
             for row in range(self.table.rowCount() - 2):
                 item = self.table.cellWidget(row, columIndex)
-                columnSum += float(item.text())
+                columnSum += float(item.text() if item.text() != '' else 0)
         return columnSum
     
     @QtCore.Slot()

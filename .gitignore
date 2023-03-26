@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+upx/
 *.py[cod]
 *$py.class
 database.py
@@ -7,6 +8,8 @@ test.py
 деятельность.xlsx
 шаблон/
 *.code-workspace
+build.bat
+
 # C extensions
 *.so
 
@@ -16,7 +19,6 @@ test.py
 .vscode/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
